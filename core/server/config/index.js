@@ -255,8 +255,9 @@ ConfigManager.prototype.load = function (configFilePath) {
             Promise.resolve(pendingConfig).then(function () {
                 return self.validate();
             }).then(function (rawConfig) {
-                resolve(self.init(rawConfig));
-            }).catch(reject);
+                return self.init(rawConfig);
+            }).then(resolve)
+            .catch(reject);
         });
     });
 };
@@ -338,7 +339,7 @@ ConfigManager.prototype.validate = function () {
     }
 
     // Check that our url is valid
-    if (!validator.isURL(config.url, {protocols: ['http', 'https'], require_protocol: true})) {
+    if (!validator.isURL(config.url, {protocols: ['http', 'https'], require_protocol: true, require_tld: false})) {
         errors.logError(
             new Error(i18n.t('errors.config.invalidUrlInConfig.description'),
             config.url,
@@ -372,14 +373,14 @@ ConfigManager.prototype.validate = function () {
     hasSocket = config.server && !!config.server.socket;
 
     // Check for valid server host and port values
-    if (!config.server || !(hasHostAndPort || hasSocket)) {
-        errors.logError(
-            new Error(i18n.t('errors.config.invalidServerValues.description')),
-            JSON.stringify(config.server),
-            i18n.t('errors.config.invalidServerValues.help'));
+    // if (!config.server || !(hasHostAndPort || hasSocket)) {
+    //     errors.logError(
+    //         new Error(i18n.t('errors.config.invalidServerValues.description')),
+    //         JSON.stringify(config.server),
+    //         i18n.t('errors.config.invalidServerValues.help'));
 
-        return Promise.reject(new Error(i18n.t('errors.config.invalidServerValues.error')));
-    }
+    //     return Promise.reject(new Error(i18n.t('errors.config.invalidServerValues.error')));
+    // }
 
     return Promise.resolve(config);
 };
