@@ -5,3 +5,8 @@ html, body, h1, h2, h3{
 .main-header{
     height:50vh;
 }
+
+.post-footer .share{
+    position: initial;
+    width:100%;
+}
