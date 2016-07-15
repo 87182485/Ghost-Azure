@@ -5,6 +5,9 @@ html, body, h1, h2, h3{
 .main-header{
     height:50vh;
 }
+.post-footer{
+    display: inline-block;
+}
 
 .post-footer .share{
     position: initial;
